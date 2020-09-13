@@ -34,9 +34,17 @@
         src: /etc/nginx/sites-available/commento-ssl.conf
         dest: /etc/nginx/sites-enabled/commento-ssl.conf
         state: link
+    - name: remove 1/2 default nginx conf files
+      file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+    - name: remove 2/2 default nginx conf files
+      file:
+        path: /etc/nginx/sites-available/default
+        state: absent
     - name: start and enable nginx service
       systemd:
-        state: started
+        state: restarted
         enabled: yes
         daemon_reload: yes
         name: nginx.service

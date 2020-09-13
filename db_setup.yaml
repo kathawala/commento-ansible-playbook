@@ -4,17 +4,20 @@
   tasks:
     - include_vars:
         dir: vars
+    # Need to install 'acl' because without it, you cannot become postgres user on ubuntu 20.04
+    # https://github.com/ansible/ansible/issues/16052
     - name: install postgresql and pip
       apt:
         name:
           - postgresql
           - postgresql-client-common
           - python3-pip
+          - acl
         state: present
         update_cache: true
       become: yes
     - name: install psycopg2 (prereq for postgres commands)
-      command: "pip3 install psycopg2"
+      command: "pip3 install psycopg2-binary"
       become: yes
     - name: create postgresql db for commento
       postgresql_db:
