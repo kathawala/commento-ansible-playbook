@@ -1,0 +1,31 @@
+---
+- name: install commento
+  hosts: server
+  become: yes
+  tasks:
+    - include_vars:
+        dir: vars/
+    - name: create /var/www/commento dir
+      file:
+        path: /var/www/commento
+        state: directory
+    - name: wget commento package
+      get_url:
+        url: "https://dl.commento.io/release/commento-v{{ VERSION }}-linux-glibc-amd64.tar.gz"
+        dest: /var/www/
+    - name: untar commento to the /var/www/commento dir
+      unarchive:
+        src: "/var/www/commento-v{{ VERSION }}-linux-glibc-amd64.tar.gz"
+        dest: "/var/www/commento"
+        remote_src: yes
+    - name: rm commento tar.gz
+      file:
+        path: "/var/www/commento-v{{ VERSION }}-linux-glibc-amd64.tar.gz"
+        state: absent
+    - name: scp commento config to remote server
+      template:
+        src: ./commento.env.j2
+        dest: /var/www/commento/commento.env
+        owner: root
+        group: root
+        mode: 0550

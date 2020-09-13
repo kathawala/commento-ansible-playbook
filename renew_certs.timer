@@ -1,0 +1,9 @@
+[Unit]
+Description = Renews SSL certs for commento.duckdns.org every 2 months
+
+[Timer]
+OnCalendar = monthly
+Persistent = true
+
+[Install]
+WantedBy = timers.target

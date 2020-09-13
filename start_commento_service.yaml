@@ -1,0 +1,15 @@
+---
+- name: enable the systemd service for commento
+  hosts: server
+  become: yes
+  tasks:
+    - name: scp commento service unit file
+      copy:
+        src: ./commento.service
+        dest: /etc/systemd/system/commento.service
+    - name: enable systemd service
+      systemd:
+        state: started
+        enabled: yes
+        daemon_reload: yes
+        name: commento.service

@@ -1,0 +1,37 @@
+---
+- name: set up commento db in postgresql
+  hosts: server
+  tasks:
+    - include_vars:
+        dir: vars
+    - name: install postgresql and pip
+      apt:
+        name:
+          - postgresql
+          - postgresql-client-common
+          - python3-pip
+        state: present
+        update_cache: true
+      become: yes
+    - name: install psycopg2 (prereq for postgres commands)
+      command: "pip3 install psycopg2"
+      become: yes
+    - name: create postgresql db for commento
+      postgresql_db:
+        name: commento
+      become: yes
+      become_user: postgres
+    - name: hash db password for new postgresql user commento 
+      shell: >
+        echo "md5$(echo -n '{{ DB_PASSWORD }}commento' | md5sum | awk '{print $1}')"
+      register: hashed_pwd
+    - name: create postgresql user to access commento
+      postgresql_user:
+        db: commento
+        name: commento
+        password: "{{ hashed_pwd.stdout }}"
+        encrypted: yes
+        expires: infinity
+        priv: ALL
+      become: yes
+      become_user: postgres

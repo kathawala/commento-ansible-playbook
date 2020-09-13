@@ -1,0 +1,15 @@
+[Unit]
+Description = renew ssl certs
+
+[Service]
+Type = oneshot
+EnvironmentFile = /var/www/commento/duckdns_token.env
+ExecStart = /var/www/commento/.acme.sh/acme.sh --insecure --issue --dns dns_duckdns -d {{ DOMAIN_NAME }} \
+            --cert-file /var/www/commento/certs/{{ DOMAIN_NAME }}.cer \
+            --key-file /var/www/commento/certs/{{ DOMAIN_NAME }}.key \
+            --ca-file /var/www/commento/certs/ca.cer \
+            --fullchain-file /var/www/commento/certs/fullchain.cer \
+            --reloadcmd "systemctl daemon-reload"
+
+[Install]
+WantedBy = multi-user.target

@@ -1,0 +1,19 @@
+[Unit]
+Description = commento daemon
+After = network.target
+
+[Service]
+User = root
+Group = root
+WorkingDirectory = /var/www/commento
+EnvironmentFile = /var/www/commento/commento.env
+ExecStart = /var/www/commento/commento
+Restart = always
+RestartSec = 5
+ExecReload = /bin/kill -s HUP $MAINPID
+KillMode = mixed
+TimeoutStopSec = 5
+PrivateTmp = true
+
+[Install]
+WantedBy = multi-user.target

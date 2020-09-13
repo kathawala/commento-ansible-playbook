@@ -1,0 +1,6 @@
+---
+- import_playbook: install_commento.yaml
+- import_playbook: db_setup.yaml
+- import_playbook: ssl_setup.yaml
+- import_playbook: start_commento_service.yaml
+- import_playbook: run_nginx.yaml

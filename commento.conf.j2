@@ -1,0 +1,6 @@
+server {
+    listen          80 default_server;
+    listen          [::]:80 default_server;
+    server_name     {{ DOMAIN_NAME }};
+    return 301 https://{{ SITE_URL }}$request_uri;
+}

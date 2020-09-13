@@ -1,0 +1,42 @@
+---
+- name: Install, configure, and run nginx to route port 80/443 to commento on 8080
+  hosts: server
+  become: yes
+  tasks:
+    - include_vars:
+        dir: vars
+    - name: install nginx
+      apt:
+        name: nginx
+        state: present
+        update_cache: true
+    - name: scp over 1/2 nginx conf files
+      template:
+        src: ./commento.conf.j2
+        dest: /etc/nginx/sites-available/commento.conf
+        owner: root
+        group: root
+        mode: 0644
+    - name: scp over 2/2 nginx conf files
+      template:
+        src: ./commento-ssl.conf.j2
+        dest: /etc/nginx/sites-available/commento-ssl.conf
+        owner: root
+        group: root
+        mode: 0644
+    - name: symlink 1/2 nginx conf files
+      file:
+        src: /etc/nginx/sites-available/commento.conf
+        dest: /etc/nginx/sites-enabled/commento.conf
+        state: link
+    - name: symlink 2/2 nginx conf files
+      file:
+        src: /etc/nginx/sites-available/commento-ssl.conf
+        dest: /etc/nginx/sites-enabled/commento-ssl.conf
+        state: link
+    - name: start and enable nginx service
+      systemd:
+        state: started
+        enabled: yes
+        daemon_reload: yes
+        name: nginx.service

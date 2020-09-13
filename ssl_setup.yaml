@@ -1,0 +1,61 @@
+---
+- name: Get certs and set up systemd timer to renew certs
+  hosts: server
+  become: yes
+  tasks:
+    - include_vars:
+        dir: vars
+    - name: make certificate directory for commento ssl certs
+      file:
+        path: /var/www/commento/certs
+        state: directory
+        mode: 0755
+    - name: clone acme.sh repo in /var/www/commento
+      git:
+        repo: https://github.com/acmesh-official/acme.sh.git
+        clone: yes
+        dest: /var/www/commento/acme.sh
+    - name: install acme.sh into /var/www/commento/.acme.sh
+      command: ./acme.sh --install --home /var/www/commento/.acme.sh --config-home /var/www/commento/.acme.sh --cert-home /var/www/commento/certs
+      args:
+        chdir: /var/www/commento/acme.sh
+    - name: remove acme.sh git repo
+      file:
+        path: /var/www/commento/acme.sh
+        state: absent
+    - name: make /var/www/commento/.acme.sh accessible to non-root
+      file:
+        path: /var/www/commento/.acme.sh
+        state: directory
+        mode: 0755
+        recurse: yes
+    - name: scp duckdns_token.env file (used by renew_certs service)
+      template:
+        src: ./duckdns_token.env.j2
+        dest: /var/www/commento/duckdns_token.env
+        owner: root
+        group: root
+        mode: 0550
+    - name: scp systemd service file for renew_certs service
+      template:
+        src: ./renew_certs.service.j2
+        dest: /etc/systemd/system/renew_certs.service
+        owner: root
+        group: root
+        mode: 0644
+    - name: scp systemd timer file for renew_certs service
+      copy:
+        src: ./renew_certs.timer
+        dest: /etc/systemd/system/renew_certs.timer
+    - name: enable the renew_certs timer
+      systemd:
+        name: renew_certs.timer
+        state: started
+        enabled: yes
+        daemon_reload: yes
+    - name: get the certs for the first time
+      systemd:
+        name: renew_certs
+        state: started
+        enabled: no
+        daemon_reload: yes
