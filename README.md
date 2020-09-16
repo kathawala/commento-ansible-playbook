@@ -46,9 +46,13 @@
 Commento has a paid, hosted solution, but you can self-host commento from a cheap VPS or from a laptop/computer at home _FOR FREE_.
 
 **SKIP** the hassle of finding a domain name.
+
 **SKIP** changing DNS records.
+
 **SKIP** procuring SSL certs.
+
 **SKIP** keeping said certs auto-renewing.
+
 **SKIP** installing and configuring all sorts of packages and databases, etc.
 
 Pay **NOTHING** for the convenience!
