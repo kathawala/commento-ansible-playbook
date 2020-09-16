@@ -1,5 +1,5 @@
 <!-- Add banner here -->
-[Banner](https://i.imgur.com/bnEShwI.png)
+![Banner](https://i.imgur.com/bnEShwI.png)
 
 # Commento Ansible Playbook
 
@@ -29,6 +29,9 @@
 - [Table of contents](#table-of-contents)
 - [Introduction](#introduction)
 - [Installation](#installation)
+- [Usage](#usage)
+  - [Prerequisites](#prerequisites)
+  - [Main](#main)
   - [Optional](#optional)
 - [Contribute](#contribute)
     - [Sponsor](#sponsor)
@@ -38,13 +41,17 @@
 
 # Introduction
 
-[Commento.io](https://commento.io) is an open-source solution to add comment section functionality into any website (even static ones) by simply adding some javascript to the frontend and having a separate backend to store comments.
+[Commento.io](https://commento.io) is an _open-source_ solution to add **comment section functionality** into any website (_even static ones_) by simply adding some javascript to the frontend and having a separate backend to store comments.
 
-Commento has a paid, hosted solution, but you can self-host commento from a cheap VPS or from a laptop/computer at home.
+Commento has a paid, hosted solution, but you can self-host commento from a cheap VPS or from a laptop/computer at home _FOR FREE_.
 
-Using this playbook, you can skip the hassle of finding a domain name, changing DNS records, adding SSL certs, keeping said certs auto-renewing, installing and configuring all sorts of packages and databases, etc.
+**SKIP** the hassle of finding a domain name.
+**SKIP** changing DNS records.
+**SKIP** procuring SSL certs.
+**SKIP** keeping said certs auto-renewing.
+**SKIP** installing and configuring all sorts of packages and databases, etc.
 
-This playbook sets up a SystemD service running commento, a SystemD service running a postgresql database connected to commento, a SystemD service running Nginx to route traffic to Commento, and a SystemD timer (i.e. cron job) to provide SSL certs and renew them every month.
+Pay **NOTHING** for the convenience!
 
 # Installation
 [(Back to top)](#table-of-contents)
@@ -67,23 +74,28 @@ To use this project, first clone the repo on your device using the command below
 ```git clone https://github.com/navendu-pottekkat/nsfw-filter.git``` -->
 
 1. Make sure you have `ansible` installed on your system. [Installation instructions](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) for all systems.
-2. ```bash
-   git clone https://github.com/kathawala/commento-ansible-playbook.git
-   ```
+2. `git clone https://github.com/kathawala/commento-ansible-playbook.git`
 
 # Usage
 [(Back to top)](#table-of-contents)
 
 ## Prerequisites
 
+This playbook sets up the following:
+
+1. SystemD service running commento
+2. SystemD service running a postgresql database connected to commento
+3. SystemD service running Nginx to route traffic to commento
+4. SystemD timer (i.e. cron job) to provide SSL certs and renew them every month.
+
 This playbook works on and has been tested for machines that run either Ubuntu 20.04 LTS or Debian 10.
 I haven't tried any other operating systems, open an issue if you'd like support for another one.
 
-You also **_need_** to sign in to [DuckDNS](https://www.duckdns.org/) and have a DuckDNS API token and subdomain.
+To use it you **_need_** to sign in to [DuckDNS](https://www.duckdns.org/) and have a DuckDNS API token and subdomain.
 This playbook uses DuckDNS because it's easy.
 If another way is best for you, open an issue or submit a PR. We'll try to make it work.
 
-Also make sure you have set up ansible to point at your computer 
+Also make sure you have set up ansible to point at the machine you want to host commento on. More info on [how to do that, here](https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html). 
 
 ## Main
 
@@ -106,6 +118,11 @@ Also make sure you have set up ansible to point at your computer
       DOMAIN_NAME: "example.duckdns.org"
       SITE_URL: "example.duckdns.org:4430"
       ```
+      You also need to take the extra step of adding your nonstandard port to the nginx configuration template `commento-ssl.conf.j2`:
+      ```
+      listen                  [::]:4430 ssl ipv6only=on;
+      listen                  4430 ssl;
+      ```
 3. Enter your GMail address information (for SMTP relay), [DuckDNS](https://www.duckdns.org/) token (for DNS), [Akismet](https://akismet.com/) key^ (for automated comment moderation) and a database password of your choice to `vars/secure_vars.yaml`. Here's an example:
    ```yaml
    ---
@@ -116,7 +133,9 @@ Also make sure you have set up ansible to point at your computer
    DUCKDNS_TOKEN: 123abc-09zy-12ab-91za-blahblahblah
    ```
 ^ optional
+
 4. Allow ["Less Secure App Access"](https://myaccount.google.com/lesssecureapps) in GMail. Your SMTP relay will not work otherwise, and you need that to allow commenters to sign up with their own email address.
+
 5. Run the `full_setup.yaml` playbook like follows
    ```bash
    ansible-playbook -i hosts full_setup.yaml --ask-become-pass
