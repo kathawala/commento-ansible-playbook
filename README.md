@@ -20,7 +20,7 @@
 
 <!-- Add a demo for your project -->
 
-![Demo Video](https://www.farhansayshi.com/media/demo.gif)
+![Demo Video](https://www.farhansayshi.com/media/demonstration.gif)
 
 # Table of contents
 
