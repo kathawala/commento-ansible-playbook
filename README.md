@@ -144,6 +144,7 @@ Also make sure you have set up ansible to point at the machine you want to host 
    ```bash
    ansible-playbook -i hosts full_setup.yaml --ask-become-pass
    ```
+   _**note:**_ If your host machine runs Debian 10, ansible won't automatically determine the correct python interpreter, so you need to add the following flag `-e 'ansible_python_interpreter=/usr/bin/python3'` to the above command
 6. Done! Visit https://example.duckdns.org (replace with the domain name you entered in step 2) and register your site with your new self-hosted commento instance!
 
 ## Optional
@@ -162,7 +163,6 @@ If you plan to do this, you should use the [DuckDNS Dynamic DNS tool](https://ww
 [(Back to top)](#table-of-contents)
 
 ### Sponsor
-[(Back to top)](#table-of-contents)
 
 Free comment section functionality on your blog in 15 minutes or less!
 
@@ -172,7 +172,6 @@ That's a good deal! Consider donating to the services that make this possible:
 * Commento -- consider [paying for a month or two](https://commento.io/pricing) of commento.io
 
 ### Adding new features or fixing bugs
-[(Back to top)](#table-of-contents)
 
 Open an issue or a PR if there is a configuration you'd like to see. Maybe an OS that isn't supported or something else I hadn't thought of.
 
