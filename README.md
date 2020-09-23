@@ -3,6 +3,8 @@
 
 # Commento Ansible Playbook
 
+I wrote about this on my blog, you can read the article [here](https://www.farhansayshi.com/post/free-one-command-self-hosted-commento-deployment-for-a-hugo-site/).
+
 <!-- Add buttons here -->
 
 <!-- ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/navendu-pottekkat/awesome-readme?include_prereleases)
