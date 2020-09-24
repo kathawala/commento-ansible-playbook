@@ -1,22 +1,13 @@
 <!-- Add banner here -->
 ![Banner](https://i.imgur.com/bnEShwI.png)
 
+![Github last commit](https://img.shields.io/github/last-commit/kathawala/commento-ansible-playbook)
+![Github repo size](https://img.shields.io/github/repo-size/kathawala/commento-ansible-playbook)
+![License](https://img.shields.io/github/license/kathawala/commento-ansible-playbook)
+
 # Commento Ansible Playbook
 
 I wrote about this on my blog, you can read the article [here](https://www.farhansayshi.com/post/free-one-command-self-hosted-commento-deployment-for-a-hugo-site/).
-
-<!-- Add buttons here -->
-
-<!-- ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/navendu-pottekkat/awesome-readme?include_prereleases)
-: This badge shows the version of the current release.
-
-![GitHub last commit](https://img.shields.io/github/last-commit/navendu-pottekkat/awesome-readme)
-: I think it is self-explanatory. This gives people an idea about how the project is being maintained.
-
-![GitHub All Releases](https://img.shields.io/github/downloads/navendu-pottekkat/awesome-readme/total): If you are not like me and your project gets a lot of downloads(*I envy you*) then you should have a badge that shows the number of downloads! This lets others know how **Awesome** your project is and is worth contributing to.
-
-![GitHub](https://img.shields.io/github/license/navendu-pottekkat/awesome-readme)
-: This shows what kind of open-source license your project uses. This is good idea as it lets people know how they can use your project for themselves. --->
 
 # Demo
 
